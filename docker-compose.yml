@@ -1,0 +1,28 @@
+version: "3"
+services:
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
+    command: "--smallfiles"
+    # command: "--smallfiles --logpath=/dev/null"
+    volumes:
+      - mongodata:/data/db
+  back:
+    build: ./back/
+  # volumes:
+  #   - ./back:/myapp
+  # working_dir: /myapp
+  # command: node app.js
+    ports:
+      - "3000:3000"
+    links:
+      - db
+  front:
+    build: ./front/
+    volumes:
+      - ./front:/usr/local/apache2/htdocs/
+    ports:
+      - "80:80"
+volumes:
+  mongodata:
