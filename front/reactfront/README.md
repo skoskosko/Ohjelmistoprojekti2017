@@ -1,3 +1,10 @@
+!!! Ei toimi, koska .gitignoreen jäi node_modules niin en huomannu pushata sitä. 
+npm vaatii nodejs 
+'npm install -g create-react-app'
+'create-react-app reactfront'
+Ja sitten voi kopioida gitin koodit reactfront kansioon jonka npm tekee
+Ellen ehi korjaamaan ennenku pullaatte.
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
