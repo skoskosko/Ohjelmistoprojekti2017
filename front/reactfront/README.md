@@ -1,15 +1,16 @@
-!!! ennenkun alkaa toimimaan pitää npmllä asentaa <br>
-npm vaatii nodejs <br>
-front kansiossa<br>
-'npm install -g create-react-app' <br>
-'create-react-app reactfront' <br>
-Mikäli epäonnistuu: <br>
-'npx create-react-app reactfront'<br>
-Sen jälkeen google maps api<br>
-'cd reactfront'<br>
-'npm install --save google-maps-react'<br>
-Ja sitten voi kopioida gitin koodit reactfront kansioon jonka npm tekee.<br>
-sit vaan 'npm start' <br>
+## Alhaalla on kans miten saa toimii jos näillä ei lähe
+!!! ennenkun alkaa toimimaan pitää npmllä asentaa .
+npm vaatii nodejs .
+front kansiossa .
+'npm install -g create-react-app' .
+'create-react-app reactfront' .
+Mikäli epäonnistuu: .
+'npx create-react-app reactfront' .
+Sen jälkeen google maps api .
+'cd reactfront' .
+'npm install --save google-maps-react' .
+Ja sitten voi kopioida gitin koodit reactfront kansioon jonka npm tekee .
+sit vaan 'npm start' .
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
