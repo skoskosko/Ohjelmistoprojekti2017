@@ -20,9 +20,9 @@ services:
       - db
   front:
     build: ./front/
-    volumes:
-      - ./front:/usr/local/apache2/htdocs/
+    # volumes:
+    #   - ./front:/usr/local/apache2/htdocs/
     ports:
-      - "80:80"
+      - "88:3000"
 volumes:
   mongodata:

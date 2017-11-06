@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Map,InfoWindow,Marker,GoogleApiWrapper} from 'google-maps-react';
+import {Map,GoogleApiWrapper} from 'google-maps-react'; // InfoWindow,Marker otettu pois importeista compile errorin takia
 var GoogleApiKey = "AIzaSyClL7rwUwSndLBRBPpB7bnd-7B_IPNfMbk";
 const style = {
   width: '60%',
