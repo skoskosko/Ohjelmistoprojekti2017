@@ -20,8 +20,9 @@ services:
       - db
   front:
     build: ./front/
-    # volumes:
-    #   - ./front:/usr/local/apache2/htdocs/
+    volumes:
+      - ./front/reactfront/public/:/home/web/public/
+      - ./front/reactfront/src/:/home/web/src/
     ports:
       - "88:3000"
 volumes:
