@@ -1,3 +1,19 @@
+/*
+Eskon muistiinpanot
+
+http://193.185.142.46/TrafficlightdataService/rest/get-traffic-amount?historyMinutes=1&device=tre053&detector=a100_1
+traffic amountti laitteelta
+
+http://opendata.navici.com/tampere/opendata/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=opendata:WFS_LIIKENNEVALO_LAITE&outputFormat=json
+laite listaus sijainneilla
+
+http://infotripla.fi/LIIRA/DynniqTrafficlightdataService_ver1_2.pdf
+Ohjeet kamoille
+
+
+*/
+
+
 "use strict";
 process.title = 'gabay';
 
