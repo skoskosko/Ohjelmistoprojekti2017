@@ -1,5 +1,4 @@
 "use strict";
-
 process.title = 'gabay';
 
 var expressPort = 3000; // port you want your express in
@@ -46,7 +45,7 @@ app.post('/newLight', function(req, res) {
         console.log("sin men??");
         res.send(fluffy);
       });
-      
+
 });
 
 

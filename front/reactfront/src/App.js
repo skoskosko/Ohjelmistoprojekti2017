@@ -14,7 +14,7 @@ class App extends Component {
           <h1 className="App-title">Traffic Light Application</h1>
         </header>
         <p className="App-intro">
-          Tässä meillä hieno etusivu<br/><br/><br/><br/>
+          Tässä meillä on taiteellisen hieno etusivu<br/><br/><br/><br/>
         </p>
         <img src={gif} className="App-gif" alt="gif"/>
         <div className="App-map-container" alt="map-container"><MapContainer/></div>
