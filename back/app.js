@@ -10,6 +10,9 @@ laite listaus sijainneilla
 http://infotripla.fi/LIIRA/DynniqTrafficlightdataService_ver1_2.pdf
 Ohjeet kamoille
 
+http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?device=tre309&historyMinutes=3
+Valon tila
+
 
 */
 
