@@ -44,6 +44,7 @@ var fs = require('fs'),
 var bodyParser = require('body-parser')
 var express = require('express');
 var app = express();
+var sleep = require("sleep");
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://db:27017', {
@@ -84,6 +85,7 @@ var congestionschema = mongoose.Schema({
 
 
 var Congestion = mongoose.model('Congestion', congestionschema);
+
 
 console.log("test");
 app.use(bodyParser.json());
@@ -151,114 +153,124 @@ app.get('/HaeData', function(req, res) {
   var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?device=tre309&historyMinutes=10"
 
   donearray = [];
-
-  Light.find(function(err, lights) {
+  lights = []
+  Light.find(function(err, light) {
     if (err) return console.error(err);
-    
-    for (index = 0; index < lights.length; ++index) {
-
-       u = lights[index]
-       //if (donearray.indexOf(u.device) > -1){
-        if (donearray.length > 0){
-         continue
-       }
-
-       console.log('Waiting');
-       var sleep = require("sleep");
-       sleep.sleep(1);
-
-      var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?"+
-      "device="+u.device+"&"+
-      "historyMinutes=2";
-      console.log(url);
-      http.get(url, function(rs){
-          var body = '';
-          console.log("Loopdi");
-          rs.on('data', function(chunk){
-              body += chunk;
-          });
-
-          rs.on('end', function(){
-              try {
-                console.log(body);
-                var resp = JSON.parse(body);
-                donedetector = [];
-                for (index = 0; index < resp.results.length; ++index) {
-                  if (donedetector.indexOf(resp.results[index].detector) > -1){
-                    continue;
-                  }
-                  donedetector.push(resp.results[index].detector);
-                  var men = false;
-                  try {
-                    var newItem = new Congestion({
-                      coordinates:  resp.results[index].geometry.coordinates, // geometry.coordinates
-                      hostId : u._id,
-                      device: resp.results[index].device,
-                      detector: resp.results[index].detector,
-                      tsPeriodEnd: resp.results[index].tsPeriodEnd,
-                      redPeriod: resp.results[index].redPeriod,
-                      queueLength: resp.results[index].queueLength,
-                      unitQueueLength: resp.results[index].unitQueueLength,
-                      vehicleCount: resp.results[index].vehicleCount,
-                      unitVehicleCount: resp.results[index].unitVehicleCount,
-                      maxWaitTime: resp.results[index].maxWaitTime,
-                      avgWaitTime: resp.results[index].avgWaitTime,
-                      unitWaitTime: resp.results[index].unitWaitTime,
-                      reliabValue: resp.results[index].reliabValue,
-                      unitReliab: resp.results[index].unitReliab
-                    });
-                  }
-                  catch(err) {
-                      console.log(resp.features[index]);
-                  }
-                  finally{
-                    Congestion.findOneAndUpdate({hostId: u._id}, {$set:newItem}, {new: true}, function(err, doc){
-                      if(err){
-
-                      }else{
-                        console.log("paivitetty")
-                        men = true;
-                      }
-
-                      });
-                      if (men == false){
-                        newItem.save(function(err, fluffy) {
-                          if (err) return console.error(err);
-                          console.log("sin men iha uus");
-
-                        });
-                      }
-
-
-                  }
-              }
-              }
-              catch(err) {
-                  console.log(err)
-                  console.log("valivaliälähaedataa");
-              }
-
-      });
-
-
-
-      }).on('error', function(e){
-            console.log("Got an error: ", e);
-      });
-
-
-      donearray.push(u.device)
-
-    }
+    handleLights(light);
 
   });
+  function handleLights(lights){
+
+    for (index = 0; index < lights.length; ++index) {
+       u = lights[index]
+      if (donearray.indexOf(u.device) > -1){
+      //if (donearray.length > 0){
+         continue
+       }
+      console.log('Waiting');
+      sleep.sleep(1);
+      SaveDeviceInfoToDB(u.device);
+      donearray.push(u.device)
+    }
+
+  }
+
+
+console.log("ny ollaan lopussa");
 res.send("Miksi Tama tulee ennenku on valmista?")
 
 });
 
 
 
+function SaveDeviceInfoToDB(device){
 
+
+  var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?"+
+  "device="+device+"&"+
+  "historyMinutes=2";
+  console.log(url);
+
+
+  http.get(url, function(rs){
+      sleep.sleep(1);
+      var body = '';
+
+      rs.on('data', function(chunk){
+        console.log("Loopdi");
+          body += chunk;
+      });
+
+      rs.on('end', function(){
+        console.log("Loopdy");
+          try {
+            console.log(body);
+            var resp = JSON.parse(body);
+            donedetector = [];
+            for (index = 0; index < resp.results.length; ++index) {
+              if (donedetector.indexOf(resp.results[index].detector) > -1){
+                continue;
+              }
+              donedetector.push(resp.results[index].detector);
+              var men = false;
+              try {
+                var newItem = new Congestion({
+                  coordinates:  resp.results[index].geometry.coordinates, // geometry.coordinates
+                  hostId : u._id,
+                  device: resp.results[index].device,
+                  detector: resp.results[index].detector,
+                  tsPeriodEnd: resp.results[index].tsPeriodEnd,
+                  redPeriod: resp.results[index].redPeriod,
+                  queueLength: resp.results[index].queueLength,
+                  unitQueueLength: resp.results[index].unitQueueLength,
+                  vehicleCount: resp.results[index].vehicleCount,
+                  unitVehicleCount: resp.results[index].unitVehicleCount,
+                  maxWaitTime: resp.results[index].maxWaitTime,
+                  avgWaitTime: resp.results[index].avgWaitTime,
+                  unitWaitTime: resp.results[index].unitWaitTime,
+                  reliabValue: resp.results[index].reliabValue,
+                  unitReliab: resp.results[index].unitReliab
+                });
+              }
+              catch(err) {
+                  console.log(resp.features[index]);
+              }
+              finally{
+                Congestion.findOneAndUpdate({hostId: u._id}, {$set:newItem}, {new: true}, function(err, doc){
+                  if(err){
+
+                  }else{
+                    console.log("paivitetty")
+                    men = true;
+                  }
+
+                  });
+                  if (men == false){
+                    newItem.save(function(err, fluffy) {
+                      if (err) return console.error(err);
+                      console.log("sin men iha uus");
+
+                    });
+                  }
+
+
+              }
+          }
+          }
+          catch(err) {
+              console.log(err)
+              console.log("valivaliälähaedataa");
+          }
+
+  });
+
+
+
+  }).on('error', function(e){
+        console.log("Got an error: ", e);
+  });
+
+}
 
 
 app.get('/haeValot', function(req, res) {
@@ -276,7 +288,7 @@ http.get(url, function(rs){
 
     rs.on('end', function(){
         var resp = JSON.parse(body);
-        // console.log(resp);
+        console.log(resp);
         Light.remove({}, function(){});
 
         for (index = 0; index < resp.features.length; ++index) {
