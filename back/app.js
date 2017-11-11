@@ -45,6 +45,7 @@ var bodyParser = require('body-parser')
 var express = require('express');
 var app = express();
 var sleep = require("sleep");
+var request = require('request');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://db:27017', {
@@ -130,10 +131,13 @@ app.use(function(req, res, next) {
 // });
 
 app.get('/congestion', function(req, res) {
+
   Congestion.find(function(err, response) {
     if (err) return console.error(err);
     res.send(response);
   });
+
+
 });
 
 
@@ -167,8 +171,6 @@ app.get('/HaeData', function(req, res) {
       //if (donearray.length > 0){
          continue
        }
-      console.log('Waiting');
-      sleep.sleep(1);
       SaveDeviceInfoToDB(u.device);
       donearray.push(u.device)
     }
@@ -178,7 +180,6 @@ app.get('/HaeData', function(req, res) {
 
 console.log("ny ollaan lopussa");
 res.send("Miksi Tama tulee ennenku on valmista?")
-
 });
 
 
@@ -192,22 +193,23 @@ function SaveDeviceInfoToDB(device){
   console.log(url);
 
 
-  http.get(url, function(rs){
-      sleep.sleep(1);
-      var body = '';
-
-      rs.on('data', function(chunk){
-        console.log("Loopdi");
-          body += chunk;
-      });
-
-      rs.on('end', function(){
+  request.get({
+      url: url,
+      json: true,
+      headers: {'User-Agent': 'request'}
+    }, (err, res, resp) => {
+      if (err) {
+        console.log('Error:', err);
+      } else if (res.statusCode !== 200) {
+        console.log('Status:', res.statusCode);
+      } else {
+        // data is already parsed as JSON:
+        console.log(resp);
         console.log("Loopdy");
           try {
-            console.log(body);
-            var resp = JSON.parse(body);
             donedetector = [];
             for (index = 0; index < resp.results.length; ++index) {
+              console.log("result");
               if (donedetector.indexOf(resp.results[index].detector) > -1){
                 continue;
               }
@@ -215,7 +217,6 @@ function SaveDeviceInfoToDB(device){
               var men = false;
               try {
                 var newItem = new Congestion({
-                  coordinates:  resp.results[index].geometry.coordinates, // geometry.coordinates
                   hostId : u._id,
                   device: resp.results[index].device,
                   detector: resp.results[index].detector,
@@ -231,11 +232,7 @@ function SaveDeviceInfoToDB(device){
                   reliabValue: resp.results[index].reliabValue,
                   unitReliab: resp.results[index].unitReliab
                 });
-              }
-              catch(err) {
-                  console.log(resp.features[index]);
-              }
-              finally{
+                console.log("item in");
                 Congestion.findOneAndUpdate({hostId: u._id}, {$set:newItem}, {new: true}, function(err, doc){
                   if(err){
 
@@ -249,26 +246,19 @@ function SaveDeviceInfoToDB(device){
                     newItem.save(function(err, fluffy) {
                       if (err) return console.error(err);
                       console.log("sin men iha uus");
-
                     });
                   }
-
-
+              }
+              catch(err) {
+                console.log(err);
+                  console.log(resp.features[index]);
               }
           }
-          }
-          catch(err) {
+          }catch(err) {
               console.log(err)
               console.log("valivaliälähaedataa");
           }
-
-  });
-
-
-
-  }).on('error', function(e){
-        console.log("Got an error: ", e);
-  });
+      }});
 
 }
 
