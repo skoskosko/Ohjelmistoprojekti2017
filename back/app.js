@@ -1,4 +1,23 @@
 /*
+
+
+Mene osoitteeseen
+
+:3000/lights
+Jos ei o valoja käy osoitteessa
+:3000/haeValot
+jos on valoja käy osoitteessa
+:3000/congestion
+jos ei ole tietoja käy osoitteessa
+:3000/HaeData
+sitten taas kun dataakin löytyy voit hakea entrytjä
+osoitteesta
+:3000/getCongestion
+parametreilla
+lat long dist
+eli latitude londitude ja etäisyys siitä pisteestä kuin kaukaa haluu dataa
+
+
 Eskon muistiinpanot
 
 http://193.185.142.46/TrafficlightdataService/rest/get-traffic-amount?historyMinutes=1&device=tre053&detector=a100_1
