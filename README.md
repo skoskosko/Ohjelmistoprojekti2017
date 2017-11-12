@@ -20,10 +20,21 @@ Seuraavaksi tarttis päättää kuka tekee mitäkin. Ite voin hoitaa serveri ja 
 * Si niitä kahta runkataan ees taas maailman tappiin asti eli build ja up
 * jos valittaa et portti 80 o käytös ni ```NET stop HTTP``` voi koettaa commandlineen
 
-### Contribution guidelines ###
+### REST ###
 
-* Code review
-* Other guidelines
+> :3000/lights
+* Jos ei o valoja käy osoitteessa
+> :3000/haeValot
+* jos on valoja käy osoitteessa
+> :3000/congestion
+* jos ei ole tietoja käy osoitteessa
+> :3000/HaeData
+* sitten taas kun dataakin löytyy voit hakea entrytjä
+* osoitteesta
+> :3000/getCongestion
+* parametreilla
+* lat long dist
+* eli latitude londitude ja etäisyys siitä pisteestä kuin kaukaa haluu dataa
 
 ### Who do I talk to? ###
 
