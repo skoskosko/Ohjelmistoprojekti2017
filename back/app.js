@@ -46,6 +46,8 @@ var express = require('express');
 var app = express();
 var sleep = require("sleep");
 var request = require('request');
+var url = require('url');
+var GeoPoint = require('geopoint');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://db:27017', {
@@ -59,16 +61,17 @@ db.once('open', function() {
 });
 
 var lighschema = mongoose.Schema({
-    coordinates: [Number], // geometry.coordinates
-    device: String, // "tre" + properties.ILMAISIN_ID
-    distance: Number, // properties.ETAISYYS
-    detector: String // properties.TUNNUS
+  coordinates: [Number], // geometry.coordinates
+  device: String, // "tre" + properties.ILMAISIN_ID
+  distance: Number, // properties.ETAISYYS
+  detector: String // properties.TUNNUS
 });
 
 var Light = mongoose.model('Light', lighschema);
 
 var congestionschema = mongoose.Schema({
-  hostId : String,
+  hostId: String,
+  coordinates: [Number],
   device: String,
   detector: String,
   tsPeriodEnd: String,
@@ -110,13 +113,13 @@ app.use(function(req, res, next) {
 // });
 
 
- // #######
- //    #    #    #  ####  #    # # #    #    #####   ##   #####  ##### ##### ###### ######
- //    #    #    # #      #   #  # ##   #      #    #  #  #    #   #     #   #      #
- //    #    #    #  ####  ####   # # #  #      #   #    # #    #   #     #   #####  #####
- //    #    #    #      # #  #   # #  # #      #   ###### #####    #     #   #      #
- //    #    #    # #    # #   #  # #   ##      #   #    # #   #    #     #   #      #
- //    #     ####   ####  #    # # #    #      #   #    # #    #   #     #   ###### ######
+// #######
+//    #    #    #  ####  #    # # #    #    #####   ##   #####  ##### ##### ###### ######
+//    #    #    # #      #   #  # ##   #      #    #  #  #    #   #     #   #      #
+//    #    #    #  ####  ####   # # #  #      #   #    # #    #   #     #   #####  #####
+//    #    #    #      # #  #   # #  # #      #   ###### #####    #     #   #      #
+//    #    #    # #    # #   #  # #   ##      #   #    # #   #    #     #   #      #
+//    #     ####   ####  #    # # #    #      #   #    # #    #   #     #   ###### ######
 
 
 // app.post('/updateLight', function(req, res) {
@@ -129,6 +132,51 @@ app.use(function(req, res, next) {
 //   res.send(dat);
 // });
 // });
+
+/** Converts numeric degrees to radians */
+if (typeof(Number.prototype.toRadians) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
+  }
+}
+
+app.get('/getCongestion', function(req, res) {
+
+  var parts = url.parse(req.url, true);
+  var query = parts.query;
+
+  // lat
+  // long
+  // dist
+  Congestion.find(function(err, allItems) {
+    if (err) return console.error(err);
+  }).exec(function(err, allItems) {
+    var resItems = [];
+    for (index = 0; index < allItems.length; ++index) {
+      var User = statueOfLiberty = new GeoPoint(parseFloat(query.lat), parseFloat(query.long));
+      var Item = statueOfLiberty = new GeoPoint(allItems[index].coordinates[0], allItems[index].coordinates[1]);
+
+      if (Item.distanceTo(User, true) < parseFloat(query.dist)) {
+        resItems.push((allItems[index]));
+      }
+    }
+      res.send(resItems);
+
+  });
+
+
+
+
+
+
+  // Congestion.find(function(err, response) {
+  //     if (err) return console.error(err);
+  //     res.send(response);
+  //   });
+
+
+});
+
 
 app.get('/congestion', function(req, res) {
 
@@ -163,14 +211,15 @@ app.get('/HaeData', function(req, res) {
     handleLights(light);
 
   });
-  function handleLights(lights){
+
+  function handleLights(lights) {
 
     for (index = 0; index < lights.length; ++index) {
-       u = lights[index]
-      if (donearray.indexOf(u.device) > -1){
-      //if (donearray.length > 0){
-         continue
-       }
+      u = lights[index]
+      if (donearray.indexOf(u.device) > -1) {
+        //if (donearray.length > 0){
+        continue
+      }
       SaveDeviceInfoToDB(u.device);
       donearray.push(u.device)
     }
@@ -178,87 +227,97 @@ app.get('/HaeData', function(req, res) {
   }
 
 
-console.log("ny ollaan lopussa");
-res.send("Miksi Tama tulee ennenku on valmista?")
+  console.log("ny ollaan lopussa");
+  res.send("Miksi Tama tulee ennenku on valmista?")
 });
 
 
 
-function SaveDeviceInfoToDB(device){
+function SaveDeviceInfoToDB(device) {
 
 
-  var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?"+
-  "device="+device+"&"+
-  "historyMinutes=2";
+  var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?" +
+    "device=" + device + "&" +
+    "historyMinutes=2";
   console.log(url);
 
 
   request.get({
-      url: url,
-      json: true,
-      headers: {'User-Agent': 'request'}
-    }, (err, res, resp) => {
-      if (err) {
-        console.log('Error:', err);
-      } else if (res.statusCode !== 200) {
-        console.log('Status:', res.statusCode);
-      } else {
-        // data is already parsed as JSON:
-        console.log(resp);
-        console.log("Loopdy");
+    url: url,
+    json: true,
+    headers: {
+      'User-Agent': 'request'
+    }
+  }, (err, res, resp) => {
+    if (err) {
+      console.log('Error:', err);
+    } else if (res.statusCode !== 200) {
+      console.log('Status:', res.statusCode);
+    } else {
+      // data is already parsed as JSON:
+      console.log(resp);
+      console.log("Loopdy");
+      try {
+        // Congestion.remove({}, function() {});
+        donedetector = [];
+        for (index = 0; index < resp.results.length; ++index) {
+          console.log("result");
+          if (donedetector.indexOf(resp.results[index].detector) > -1) {
+            continue;
+          }
+          donedetector.push(resp.results[index].detector);
+          var men = false;
           try {
-            donedetector = [];
-            for (index = 0; index < resp.results.length; ++index) {
-              console.log("result");
-              if (donedetector.indexOf(resp.results[index].detector) > -1){
-                continue;
-              }
-              donedetector.push(resp.results[index].detector);
-              var men = false;
-              try {
-                var newItem = new Congestion({
-                  hostId : u._id,
-                  device: resp.results[index].device,
-                  detector: resp.results[index].detector,
-                  tsPeriodEnd: resp.results[index].tsPeriodEnd,
-                  redPeriod: resp.results[index].redPeriod,
-                  queueLength: resp.results[index].queueLength,
-                  unitQueueLength: resp.results[index].unitQueueLength,
-                  vehicleCount: resp.results[index].vehicleCount,
-                  unitVehicleCount: resp.results[index].unitVehicleCount,
-                  maxWaitTime: resp.results[index].maxWaitTime,
-                  avgWaitTime: resp.results[index].avgWaitTime,
-                  unitWaitTime: resp.results[index].unitWaitTime,
-                  reliabValue: resp.results[index].reliabValue,
-                  unitReliab: resp.results[index].unitReliab
-                });
-                console.log("item in");
-                Congestion.findOneAndUpdate({hostId: u._id}, {$set:newItem}, {new: true}, function(err, doc){
-                  if(err){
+            var newItem = new Congestion({
+              hostId: u._id,
+              device: resp.results[index].device,
+              detector: resp.results[index].detector,
+              coordinates: u.coordinates,
+              tsPeriodEnd: resp.results[index].tsPeriodEnd,
+              redPeriod: resp.results[index].redPeriod,
+              queueLength: resp.results[index].queueLength,
+              unitQueueLength: resp.results[index].unitQueueLength,
+              vehicleCount: resp.results[index].vehicleCount,
+              unitVehicleCount: resp.results[index].unitVehicleCount,
+              maxWaitTime: resp.results[index].maxWaitTime,
+              avgWaitTime: resp.results[index].avgWaitTime,
+              unitWaitTime: resp.results[index].unitWaitTime,
+              reliabValue: resp.results[index].reliabValue,
+              unitReliab: resp.results[index].unitReliab
+            });
+            console.log("item in");
+            Congestion.findOneAndUpdate({
+              hostId: u._id
+            }, {
+              newItem
+            }, {
+              new: true
+            }, function(err, doc) {
+              if (err) {
 
-                  }else{
-                    console.log("paivitetty")
-                    men = true;
-                  }
+              } else {
+                console.log("paivitetty")
+                men = true;
+              }
 
-                  });
-                  if (men == false){
-                    newItem.save(function(err, fluffy) {
-                      if (err) return console.error(err);
-                      console.log("sin men iha uus");
-                    });
-                  }
-              }
-              catch(err) {
-                console.log(err);
-                  console.log(resp.features[index]);
-              }
+            });
+            if (men == false) {
+              newItem.save(function(err, fluffy) {
+                if (err) return console.error(err);
+                console.log("sin men iha uus");
+              });
+            }
+          } catch (err) {
+            console.log(err);
+            console.log(resp.features[index]);
           }
-          }catch(err) {
-              console.log(err)
-              console.log("valivaliälähaedataa");
-          }
-      }});
+        }
+      } catch (err) {
+        console.log(err)
+        console.log("valivaliälähaedataa");
+      }
+    }
+  });
 
 }
 
@@ -269,47 +328,45 @@ app.get('/haeValot', function(req, res) {
 
   var url = "http://opendata.navici.com/tampere/opendata/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=opendata:WFS_LIIKENNEVALO_ILMAISIN&outputFormat=json&srsName=EPSG:4326"
 
-http.get(url, function(rs){
+  http.get(url, function(rs) {
     var body = '';
 
-    rs.on('data', function(chunk){
-        body += chunk;
+    rs.on('data', function(chunk) {
+      body += chunk;
     });
 
-    rs.on('end', function(){
-        var resp = JSON.parse(body);
-        console.log(resp);
-        Light.remove({}, function(){});
+    rs.on('end', function() {
+      var resp = JSON.parse(body);
+      console.log(resp);
+      Light.remove({}, function() {});
 
-        for (index = 0; index < resp.features.length; ++index) {
+      for (index = 0; index < resp.features.length; ++index) {
 
-          try {
-            var newItem = new Light({
-              coordinates:  resp.features[index].geometry.coordinates, // geometry.coordinates
-              device: "tre"+resp.features[index].properties.LIITTYMAN_NRO, // "tre" + properties.ILMAISIN_ID
-              distance: resp.features[index].properties.ETAISYYS, // properties.ETAISYYS
-              detector: resp.features[index].properties.TUNNUS
-            });
-          }
-          catch(err) {
-              console.log(resp.features[index]);
-          }
-          finally{
+        try {
+          var newItem = new Light({
+            coordinates: resp.features[index].geometry.coordinates, // geometry.coordinates
+            device: "tre" + resp.features[index].properties.LIITTYMAN_NRO, // "tre" + properties.ILMAISIN_ID
+            distance: resp.features[index].properties.ETAISYYS, // properties.ETAISYYS
+            detector: resp.features[index].properties.TUNNUS
+          });
+        } catch (err) {
+          console.log(resp.features[index]);
+        } finally {
 
-            newItem.save(function(err, fluffy) {
-              if (err) return console.error(err);
-              // console.log("sin men");
-            });
-          }
-
-
+          newItem.save(function(err, fluffy) {
+            if (err) return console.error(err);
+            // console.log("sin men");
+          });
         }
 
-        res.send("njoum");
+
+      }
+
+      res.send("njoum");
     });
-}).on('error', function(e){
-      console.log("Got an error: ", e);
-});
+  }).on('error', function(e) {
+    console.log("Got an error: ", e);
+  });
 });
 
 
