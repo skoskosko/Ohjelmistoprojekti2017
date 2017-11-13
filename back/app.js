@@ -172,8 +172,16 @@ app.get('/getCongestion', function(req, res) {
   }).exec(function(err, allItems) {
     var resItems = [];
     for (index = 0; index < allItems.length; ++index) {
-      var User = statueOfLiberty = new GeoPoint(parseFloat(query.lat), parseFloat(query.long));
-      var Item = statueOfLiberty = new GeoPoint(allItems[index].coordinates[0], allItems[index].coordinates[1]);
+      try{
+        var User = statueOfLiberty = new GeoPoint(parseFloat(query.lat), parseFloat(query.long));
+        var Item = statueOfLiberty = new GeoPoint(allItems[index].coordinates[0], allItems[index].coordinates[1]);
+
+      }catch(e){
+        res.send(e);
+        return
+
+      }
+
 
       if (Item.distanceTo(User, true) < parseFloat(query.dist)) {
         resItems.push((allItems[index]));
@@ -274,7 +282,8 @@ function SaveDeviceInfoToDB(device) {
       console.log('Status:', res.statusCode);
     } else {
       // data is already parsed as JSON:
-      console.log(resp);
+      //console.log(resp);
+      console.log(resp.results.length);
       console.log("Loopdy");
       try {
         // Congestion.remove({}, function() {});
