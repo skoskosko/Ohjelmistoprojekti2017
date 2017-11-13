@@ -16,6 +16,7 @@ class App extends Component {
         <p className="App-intro">
           Tässä meillä on taiteellisen hieno etusivu<br/><br/><br/><br/>
         </p>
+        <div className="btn btn-success">Testi Nappi</div>
         <img src={gif} className="App-gif" alt="gif"/>
         <div className="App-map-container" alt="map-container"><MapContainer/></div>
       </div>
