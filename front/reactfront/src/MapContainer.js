@@ -23,3 +23,5 @@ export class MapContainer extends Component{
 }
 
 export default GoogleApiWrapper({apiKey: (GoogleApiKey)})(MapContainer)
+
+//https://maps.googleapis.com/maps/api/directions/json?origin=Hervanta,Tampere&destination=Sokos,Tampere&waypoints=Rautatieasema,Tampere&key=AIzaSyClL7rwUwSndLBRBPpB7bnd-7B_IPNfMbk
