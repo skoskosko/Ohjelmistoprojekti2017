@@ -247,7 +247,7 @@ app.get('/general/HaeData', function(req, res) { // get-traffic-queue-length-and
                 //if (donearray.length > 0){
                 continue
             }
-            SaveDeviceInfoToDB(u.device);
+            SaveDeviceInfoToDB(u);
             donearray.push(u.device)
         }
 
@@ -280,7 +280,7 @@ app.get('/general/HaeDataAmount', function(req, res) { // gget-traffic-amount
                 //if (donearray.length > 0){
                 continue
             }
-            SaveTrafAmountToDB(u.device);
+            SaveTrafAmountToDB(u);
             donearray.push(u.device)
         }
 
@@ -290,10 +290,10 @@ app.get('/general/HaeDataAmount', function(req, res) { // gget-traffic-amount
 });
 
 
-function SaveTrafAmountToDB(device){ // get-traffic-amount
+function SaveTrafAmountToDB(u){ // get-traffic-amount
 
   var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-amount?" +
-      "device=" + device + "&" +
+      "device=" + u.device + "&" +
       "historyMinutes=3";
   console.log(url);
 
@@ -374,11 +374,11 @@ function SaveTrafAmountToDB(device){ // get-traffic-amount
 }
 
 
-function SaveDeviceInfoToDB(device) { // get-traffic-queue-length-and-wait-time
+function SaveDeviceInfoToDB(u) { // get-traffic-queue-length-and-wait-time
 
 
     var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?" +
-        "device=" + device + "&" +
+        "device=" + u.device + "&" +
         "historyMinutes=2";
     console.log(url);
 
