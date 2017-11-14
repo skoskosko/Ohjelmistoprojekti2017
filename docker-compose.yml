@@ -8,16 +8,41 @@ services:
     # command: "--smallfiles --logpath=/dev/null"
     volumes:
       - mongodata:/data/db
-  back:
-    build: ./back/
+  nginx:
+    build: ./proxy/
+    links:
+        - back_general:back_general
+        - back_lights:back_lights
+    ports:
+        - "3000:3000"
+  back_general:
+    build: ./back/generalStuff/
   # volumes:
   #   - ./back:/myapp
   # working_dir: /myapp
   # command: node app.js
     ports:
-      - "3000:3000"
+      - "3333"
+
+  back_congestion:
+    build: ./back/getCongestions/
+    ports:
+      - "3333"
+
+  back_lights:
+    build: ./back/getLights/
+    ports:
+      - "3333"
     links:
       - db
+
+  back_traffick:
+    build: ./back/getTraffick/
+    ports:
+      - "3333"
+    links:
+      - db
+
   front:
     build: ./front/
     volumes:

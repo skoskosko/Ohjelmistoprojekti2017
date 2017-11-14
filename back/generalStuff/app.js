@@ -56,7 +56,7 @@ Hae valojen tilat kantaan
 */
 process.title = 'gabay';
 
-var expressPort = 3000; // port you want your express in
+var expressPort = 3333; // port you want your express in
 var http = require('http');
 var fs = require('fs'),
     path = require('path');
@@ -170,7 +170,7 @@ app.use(function(req, res, next) {
 // });
 // });
 
-app.get('/getTrafamount', function(req, res) {
+app.get('/general/getTrafamount', function(req, res) {
 
     var parts = url.parse(req.url, true);
     var query = parts.query;
@@ -216,53 +216,7 @@ app.get('/getTrafamount', function(req, res) {
 });
 
 
-app.get('/getCongestion', function(req, res) {
-
-    var parts = url.parse(req.url, true);
-    var query = parts.query;
-
-    // lat
-    // long
-    // dist
-    Congestion.find(function(err, allItems) {
-        if (err) return console.error(err);
-    }).exec(function(err, allItems) {
-        var resItems = [];
-        for (index = 0; index < allItems.length; ++index) {
-            try {
-                var User = statueOfLiberty = new GeoPoint(parseFloat(query.lat), parseFloat(query.long));
-                var Item = statueOfLiberty = new GeoPoint(allItems[index].coordinates[0], allItems[index].coordinates[1]);
-
-            } catch (e) {
-                res.send(e);
-                return
-
-            }
-
-
-            if (Item.distanceTo(User, true) < parseFloat(query.dist)) {
-                resItems.push((allItems[index]));
-            }
-        }
-        res.send(resItems);
-
-    });
-
-
-
-
-
-
-    // Congestion.find(function(err, response) {
-    //     if (err) return console.error(err);
-    //     res.send(response);
-    //   });
-
-
-});
-
-
-app.get('/Trafamount', function(req, res) {
+app.get('/general/Trafamount', function(req, res) {
 
     Trafamount.find(function(err, response) {
         if (err) return console.error(err);
@@ -273,26 +227,7 @@ app.get('/Trafamount', function(req, res) {
 });
 
 
-app.get('/congestion', function(req, res) {
-
-    Congestion.find(function(err, response) {
-        if (err) return console.error(err);
-        res.send(response);
-    });
-
-
-});
-
-
-app.get('/lights', function(req, res) {
-    Light.find(function(err, response) {
-        if (err) return console.error(err);
-        res.send(response);
-    });
-});
-
-
-app.get('/HaeData', function(req, res) { // get-traffic-queue-length-and-wait-time
+app.get('/general/HaeData', function(req, res) { // get-traffic-queue-length-and-wait-time
 
     var request = require("request")
 
@@ -324,7 +259,7 @@ app.get('/HaeData', function(req, res) { // get-traffic-queue-length-and-wait-ti
 });
 
 
-app.get('/HaeDataAmount', function(req, res) { // gget-traffic-amount
+app.get('/general/HaeDataAmount', function(req, res) { // gget-traffic-amount
     var request = require("request")
 
     var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-amount?device=tre306&detector=d50"
@@ -529,7 +464,7 @@ function SaveDeviceInfoToDB(device) { // get-traffic-queue-length-and-wait-time
 }
 
 
-app.get('/haeValot', function(req, res) { // WFS_LIIKENNEVALO_ILMAISIN
+app.get('/general/haeValot', function(req, res) { // WFS_LIIKENNEVALO_ILMAISIN
 
     var request = require("request")
 
