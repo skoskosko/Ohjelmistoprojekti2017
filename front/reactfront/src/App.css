@@ -7,8 +7,10 @@ body {
 }
 
 .App-logo {
+  position: absolute;
   animation: App-gif-spin infinite 20s linear;
-  height: 100px;
+  height: 70px;
+  left: 25px;
 }
 
 .App-top {
@@ -20,15 +22,38 @@ body {
 .App-header {
   float:left;
   background-color: #222;
-  height: 150px;
+  height: 100px;
   width: 25%;
   color: white;
-  padding-top: 25px;
+  padding-top: 15px;
   padding-bottom: 25px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.App-title1 {
+  color: #E74C3C;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 110px;
+  top: 40px
+}
+
+.App-title2 {
+  color: #F4B350;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 205px;
+  top: 40px
+}
+
+.App-title3 {
+  color: #87D37C;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 285px;
+  top: 40px
 }
 
 .App-submits{
@@ -36,34 +61,42 @@ body {
   float:left;
   background-color: #a6a6a6;
   text-align: left;
-  top: 200px;
+  top: 110px;
   width: 25%;
-  height: 150px;
+  height: 135px;
   padding-left: 20px;
   box-sizing: border-box;
 }
 
-.inputField {
-    width: 45%;
+.form-control {
+    width: calc(100% - 12px);
 }
 
 .submitButton{
   position: absolute;
   margin: auto;
   left: 70%;
-  width: 100px;
-  height: 60px;
+  width: 25%;
+  height: 62%;
 }
 
 .App-results{
   position: absolute;
   float:left;
   width: 25%;
-  height: calc(100% - 360px);
+  height: calc(100% - 255px);
   padding-left: 20px;
-  top: 350px;
+  top: 245px;
   background-color: #cccccc;
   box-sizing: border-box;
+}
+
+.result{
+
+}
+
+.resultRoute{
+  font-size: 1.5em;
 }
 
 .App-map-container{
