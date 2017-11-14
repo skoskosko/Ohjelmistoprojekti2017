@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import logo from './images/stop.svg';
-import gif from './images/giphy.gif';
 import './App.css';
 import MapContainer from './MapContainer.js';
 
@@ -36,10 +35,13 @@ class App extends Component {
         </div>
         <div className="App-results">
           <div className="result">
-            <p className="resultRoute">From -mist- to -mihi-</p>
+            <p className="resultRoute">-mist- ➟ -mihi-</p>
+            <p className="resultNumber">Liikennevaloja matkalla: -kpl- kpl</p>
+            <p className="resultTime">Arvioitu matkan kesto: -time- </p>
 
           </div>
         </div>
+        
         <div className="App-map-container" alt="map-container"><MapContainer/></div>
         <div className="App-bot"></div>
       </div>
