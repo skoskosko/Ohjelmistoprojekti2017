@@ -2,33 +2,121 @@
   text-align: center;
 }
 
+body {
+    background-color: #222;
+}
+
 .App-logo {
-  height: 100px;
+  position: absolute;
+  animation: App-gif-spin infinite 20s linear;
+  height: 70px;
+  left: 25px;
+}
+
+.App-top {
+  background-color: #222;
+  height: 10px;
+  width: 100%;
 }
 
 .App-header {
+  float:left;
   background-color: #222;
-  height: 150px;
-  padding: 25px;
+  height: 100px;
+  width: 25%;
   color: white;
+  padding-top: 15px;
+  padding-bottom: 25px;
 }
 
-.App-title {
+.App-title1 {
+  color: #E74C3C;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 110px;
+  top: 40px
+}
+
+.App-title2 {
+  color: #F4B350;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 205px;
+  top: 40px
+}
+
+.App-title3 {
+  color: #87D37C;
+  float:left;
+  position: absolute;
+  font-size: 2em;
+  left: 285px;
+  top: 40px
+}
+
+.App-submits{
+  position: absolute;
+  float:left;
+  background-color: #a6a6a6;
+  text-align: left;
+  top: 110px;
+  width: 25%;
+  height: 135px;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.form-control {
+    width: calc(100% - 12px);
+}
+
+.submitButton{
+  position: absolute;
+  margin: auto;
+  left: 70%;
+  width: 25%;
+  height: 62%;
+}
+
+.App-results{
+  position: absolute;
+  float:left;
+  width: 25%;
+  height: calc(100% - 255px);
+  padding-left: 20px;
+  top: 245px;
+  background-color: #cccccc;
+  box-sizing: border-box;
+}
+
+.result{
+
+}
+
+.resultRoute{
   font-size: 1.5em;
 }
 
-.App-intro {
-  font-size: large;
+.App-map-container{
+  position: absolute;
+  margin: auto;
+  width: 75%;
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  height: calc(100% - 20px);
+  left: 25%;
 }
 
-.App-gif{
-  animation: App-gif-spin infinite 20s linear;
+.App-bot {
+  background-color: #222;
+  height: 10px;
+  width: 100%;
+  top: calc(100% - 10px);
 }
-.App-map-container{
-  width: 100px;
-  height: 100px;
-  padding-left: 370px;
-}
+
 @keyframes App-gif-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
