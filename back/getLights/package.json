@@ -1,0 +1,16 @@
+{
+  "name": "Ohjelmistoprojekti",
+  "version": "0.0.1",
+  "description": "Server list",
+  "main": "app.js",
+  "author": "Esko Takku",
+  "dependencies": {
+    "body-parser": "^1.9.2",
+    "express": "^4.15.4",
+    "mongoose": "^4.11.9",
+    "request": "2.81.0",
+    "sleep": "5.1.1",
+    "url": "0.11.0",
+    "geopoint": "1.0.1"
+  }
+}
