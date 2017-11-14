@@ -75,8 +75,7 @@ mongoose.connect('mongodb://db:27017', {
 });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-    // we're connected!
+db.once('open', function() { // we're connected!
 });
 
 var lighschema = mongoose.Schema({
@@ -86,7 +85,9 @@ var lighschema = mongoose.Schema({
     detector: String // properties.TUNNUS
 });
 
+
 var Light = mongoose.model('Light', lighschema);
+
 
 var trafamountschema = mongoose.Schema({
       hostId: String,
@@ -100,6 +101,7 @@ var trafamountschema = mongoose.Schema({
       reliabValue: Number,
       unitReliab: String,
 });
+
 
 var Trafamount = mongoose.model('Trafamount', trafamountschema);
 
@@ -270,6 +272,7 @@ app.get('/Trafamount', function(req, res) {
 
 });
 
+
 app.get('/congestion', function(req, res) {
 
     Congestion.find(function(err, response) {
@@ -288,7 +291,6 @@ app.get('/lights', function(req, res) {
     });
 });
 
-// http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?device=tre309&historyMinutes=3
 
 app.get('/HaeData', function(req, res) { // get-traffic-queue-length-and-wait-time
 
@@ -573,10 +575,6 @@ app.get('/haeValot', function(req, res) { // WFS_LIIKENNEVALO_ILMAISIN
         console.log("Got an error: ", e);
     });
 });
-
-
-
-
 
 
 app.listen(expressPort);
