@@ -92,11 +92,25 @@ body {
 }
 
 .result{
-
+  position:relative;
+  background-color: #cccccc;
+  top:10px;
+  width: 95%;
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #a6a6a6;
 }
 
 .resultRoute{
   font-size: 1.5em;
+}
+
+.resultNumber{
+  font-size: 1em;
+}
+
+.resultTime{
+  font-size: 1em;
 }
 
 .App-map-container{
