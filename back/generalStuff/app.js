@@ -215,6 +215,15 @@ app.get('/general/getTrafamount', function(req, res) {
 
 });
 
+app.get('/general/nollaacongestions', function(req, res) {
+  Congestion.remove({}, function() {});
+});
+
+app.get('/general/nollaatraffick', function(req, res) {
+  Trafamount.remove({}, function() {});
+});
+
+
 
 app.get('/general/Trafamount', function(req, res) {
 
