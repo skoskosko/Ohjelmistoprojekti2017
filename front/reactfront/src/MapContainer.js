@@ -77,7 +77,7 @@ componentWillMount(){
 }
 componentDidMount(){
   console.log("Did mount")
-  Axios.get('http://takku.eu:3001/congestion')
+  Axios.get('http://takku.eu:3001/congestions')
   .then(response =>{
 console.log(response)
     this.setState({
