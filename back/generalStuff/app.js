@@ -242,8 +242,7 @@ app.get('/general/HaeData', function(req, res) { // get-traffic-queue-length-and
 
     var request = require("request")
 
-    donearray = [];
-    lights = []
+
     Light.find(function(err, light) {
         if (err) return console.error(err);
         handleLights(light);
@@ -251,15 +250,16 @@ app.get('/general/HaeData', function(req, res) { // get-traffic-queue-length-and
     });
 
     function handleLights(lights) {
-
+        donearray = [];
         for (index = 0; index < lights.length; ++index) {
             u = lights[index]
             if (donearray.indexOf(u.device) > -1) {
                 //if (donearray.length > 0){
                 continue
             }
+            donearray.push(u.device);
             SaveDeviceInfoToDB(u);
-            donearray.push(u.device)
+
         }
 
     }
@@ -275,8 +275,7 @@ app.get('/general/HaeDataAmount', function(req, res) { // gget-traffic-amount
 
     var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-amount?device=tre306&detector=d50"
 
-    donearray = [];
-    lights = []
+
     Light.find(function(err, light) {
         if (err) return console.error(err);
         handleLights(light);
@@ -284,15 +283,16 @@ app.get('/general/HaeDataAmount', function(req, res) { // gget-traffic-amount
     });
 
     function handleLights(lights) {
-
+        donearray = [];
         for (index = 0; index < lights.length; ++index) {
             u = lights[index]
             if (donearray.indexOf(u.device) > -1) {
                 //if (donearray.length > 0){
                 continue
             }
+            donearray.push(u.device);
             SaveTrafAmountToDB(u);
-            donearray.push(u.device)
+
         }
 
     }
