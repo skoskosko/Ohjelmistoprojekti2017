@@ -390,7 +390,7 @@ function SaveDeviceInfoToDB(u) { // get-traffic-queue-length-and-wait-time
 
     var url = "http://193.185.142.46/TrafficlightdataService/rest/get-traffic-queue-length-and-wait-time?" +
         "device=" + u.device + "&" +
-        "historyMinutes=2";
+        "historyMinutes=10";
     console.log(url);
 
 
