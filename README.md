@@ -17,21 +17,20 @@ Seuraavaksi tarttis päättää kuka tekee mitäkin. Ite voin hoitaa serveri ja 
 * ```docker volume create --name=mongodata``` Windows ei jaksa toimia asiallisesti suoraan kansioon joten pitää tehjä virtuaali asema
 * kirjoita ```docker-compose build```
 * ja viimestelläksesi koko maailman ```docker-compose up```
-* Si niitä kahta runkataan ees taas maailman tappiin asti eli build ja up
 * jos valittaa et portti 80 o käytös ni ```NET stop HTTP``` voi koettaa commandlineen
 
 ### REST ###
 
 > :3000/lights
 * Jos ei o valoja käy osoitteessa
-> :3000/haeValot
+> :3000/general/haeValot
 * jos on valoja käy osoitteessa
-> :3000/congestion
+> :3000/congestions
 * jos ei ole tietoja käy osoitteessa
-> :3000/HaeData
+> :3000/general/HaeData
 * sitten taas kun dataakin löytyy voit hakea entrytjä
 * osoitteesta
-> :3000/getCongestion
+> :3000/congestions/getCongestion
 * parametreilla
 * lat long dist
 * eli latitude londitude ja etäisyys siitä pisteestä kuin kaukaa haluu dataa
